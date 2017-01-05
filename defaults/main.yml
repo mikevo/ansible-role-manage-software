@@ -1,0 +1,11 @@
+---
+pkg_installed: []
+pkg_removed: []
+
+usr_bin_installed: []
+usr_sbin_installed: []
+
+usr_bin_removed: []
+usr_sbin_removed: []
+
+opt_software_installed: {}

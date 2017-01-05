@@ -1,0 +1,10 @@
+# test.yml
+# test playbook
+# add lochalhost to inventory file /etc/ansible/hosts:
+#  localhost ansible_connection=local
+---
+- hosts: localhost
+  vars_files:
+    - "test_vars.yml"
+  roles:
+  - { role: ../manage-software }

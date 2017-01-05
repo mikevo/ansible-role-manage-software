@@ -1,0 +1,88 @@
+---    
+- name: remove software packages
+  package:
+    pkg: "{{ item }}"
+    state: absent
+  with_items: "{{ pkg_removed }}"
+  tags:
+    - pkg
+    - remove
+    
+- name: remove scripts from /usr/local/bin
+  file:
+    path: "/usr/local/bin/{{ item }}"
+    state: absent
+  with_items: "{{ usr_bin_removed }}"
+  tags:
+    - scripts
+    - remove
+
+- name: remove scripts from /usr/local/sbin
+  file:
+    path: "/usr/local/sbin/{{ item }}"
+    state: absent
+  with_items: "{{ usr_sbin_removed }}"
+  tags:
+    - scripts
+    - remove
+
+- name: install software packages
+  package:
+    pkg: "{{ item }}"
+    state: installed
+  with_items: "{{ pkg_installed }}"
+  tags:
+    - pkg
+    - install
+    
+- name: copy scripts to /usr/local/bin
+  copy: 
+    src: "{{ item }}"
+    dest: "/usr/local/bin/"
+    owner: "root"
+    group: "root"
+    mode: "a=rx"
+  with_fileglob: "{{ usr_bin_installed }}"
+  tags:
+    - scripts
+    - install
+
+- name: copy scripts to /usr/local/sbin
+  copy: 
+    src: "{{ item }}"
+    dest: "/usr/local/bin/"
+    owner: "root"
+    group: "root"
+    mode: "a=rx"
+  with_fileglob: "{{ usr_sbin_installed }}"
+  tags:
+    - scripts
+    - install
+    
+- name: sync opt software
+  synchronize: src={{ item.path }}/ dest=/opt/{{ item.path | basename }}/ partial=yes checksum=yes
+  with_items: "{{ opt_software_installed }}"
+  tags:
+    - opt
+    - install
+
+- name: add opt software links in /usr/local/bin
+  file: src=/opt/{{ item.path | basename }}/{{ item.bin }} dest=/usr/local/bin/{{ item.link | default(item.bin) }} owner=root group=root state=link
+  with_items: "{{ opt_software_installed }}"
+  tags:
+    - opt
+    - install
+    
+- name: include tasks for opt software
+  include: "{{ item.tasks }}"
+  when: item.tasks is defined
+  with_items: "{{ opt_software_installed }}"
+  tags:
+    - opt
+    - install
+  
+- name: update software packages
+  package: name=* state=latest
+  tags:
+    - pkg
+    - update

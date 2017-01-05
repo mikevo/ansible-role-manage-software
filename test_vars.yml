@@ -1,0 +1,20 @@
+# works with fedora 25
+---
+pkg_installed:
+  - libselinux-python
+  - libsemanage-python
+  - policycoreutils-python
+  - bind-utils
+  - bash-completion
+  - git
+  - mailx
+  - NetworkManager-glib
+  - net-tools
+  - nfs-utils
+  - rsync
+  - screen
+  - sudo
+  - tar
+  - unzip
+  - vim
+  - pxz
