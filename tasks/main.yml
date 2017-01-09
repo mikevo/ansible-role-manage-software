@@ -50,7 +50,7 @@
 - name: copy scripts to /usr/local/sbin
   copy: 
     src: "{{ item }}"
-    dest: "/usr/local/bin/"
+    dest: "/usr/local/sbin/"
     owner: "root"
     group: "root"
     mode: "a=rx"
