@@ -1,0 +1,13 @@
+---
+- hosts: ansible-manage-software-f25
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Install python2 and python2-dnf
+      raw: dnf -y install python2 python2-dnf
+    - name: Gather facts
+      setup:
+
+- hosts: all
+  roles:
+  - manage-software

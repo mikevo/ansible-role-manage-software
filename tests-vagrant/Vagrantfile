@@ -1,0 +1,46 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.define "ansible-manage-software-el7" do |el7|
+    el7.vm.box = "centos/7"
+    el7.ssh.insert_key = false
+
+    el7.vm.provider :virtualbox do |v|
+      v.name = "ansible-manage-software-el7"
+      v.memory = 512
+      v.cpus = 2
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+
+    el7.vm.hostname = "ansible-manage-software-el7"
+    el7.vm.network :private_network, ip: "192.168.137.3"
+  end
+  
+  config.vm.define "ansible-manage-software-f25" do |f25|
+    f25.vm.box = "fedora/25-cloud-base"
+    f25.ssh.insert_key = false
+
+    f25.vm.provider :virtualbox do |v|
+      v.name = "ansible-manage-software-f25"
+      v.memory = 512
+      v.cpus = 2
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+
+    f25.vm.hostname = "ansible-manage-software-f25"
+    f25.vm.network :private_network, ip: "192.168.137.4"
+  end
+
+  # Ansible provisioner.
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "test.yml"
+    ansible.inventory_path = "inventory.yml"
+    ansible.sudo = true
+  end
+
+end

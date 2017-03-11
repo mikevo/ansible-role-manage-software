@@ -16,5 +16,3 @@ pkg_installed:
   - sudo
   - tar
   - unzip
-  - vim
-  - pxz
