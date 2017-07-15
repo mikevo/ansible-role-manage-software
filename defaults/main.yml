@@ -9,3 +9,5 @@ usr_bin_removed: []
 usr_sbin_removed: []
 
 opt_software_installed: {}
+
+root_group: root

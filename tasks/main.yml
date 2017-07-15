@@ -29,7 +29,7 @@
 - name: install software packages
   package:
     pkg: "{{ item }}"
-    state: installed
+    state: present
   with_items: "{{ pkg_installed }}"
   tags:
     - pkg
@@ -40,7 +40,7 @@
     src: "{{ item }}"
     dest: "/usr/local/bin/"
     owner: "root"
-    group: "root"
+    group: "{{ root_group }}"
     mode: "a=rx"
   with_fileglob: "{{ usr_bin_installed }}"
   tags:
@@ -52,7 +52,7 @@
     src: "{{ item }}"
     dest: "/usr/local/sbin/"
     owner: "root"
-    group: "root"
+    group: "{{ root_group }}"
     mode: "a=rx"
   with_fileglob: "{{ usr_sbin_installed }}"
   tags:
@@ -83,6 +83,11 @@
   
 - name: update software packages
   package: name=* state=latest
+  when: ansible_system == 'Linux'
   tags:
     - pkg
     - update
+
+- name: update software packages (FreeBSD)
+  raw: 'pkg upgrade'
+  
