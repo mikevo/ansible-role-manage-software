@@ -91,3 +91,6 @@
 - name: update software packages (FreeBSD)
   raw: 'pkg upgrade'
   when: ansible_system == 'FreeBSD'
+  tags:
+    - pkg
+    - update
