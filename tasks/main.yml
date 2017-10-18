@@ -60,7 +60,7 @@
     - install
     
 - name: sync opt software
-  synchronize: src={{ item.path }}/ dest=/opt/{{ item.path | basename }}/ partial=yes checksum=yes
+  synchronize: src={{ item.path }}/ dest=/opt/{{ item.path | basename }}/
   with_items: "{{ opt_software_installed }}"
   tags:
     - opt
@@ -74,7 +74,7 @@
     - install
     
 - name: include tasks for opt software
-  include: "{{ item.tasks }}"
+  include_tasks: "{{ item.tasks }}"
   when: item.tasks is defined
   with_items: "{{ opt_software_installed }}"
   tags:
